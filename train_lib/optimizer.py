@@ -20,7 +20,7 @@ def get_optimizer(config, model_dict):
     optimizer = torch.optim.Adam([
       {"params": model_dict.get('measurement_rep').parameters(),
        "lr": config.y_siren_learning_rate,
-       "amsgrad": config.y_amsgrad_flag},
+       "amsgrad": True},
       {"params": [model_dict.get('input_parameters')],
        "lr": config.input_learning_rate}
       ])

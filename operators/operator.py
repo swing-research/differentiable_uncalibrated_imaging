@@ -38,8 +38,6 @@ def get_operator_dict(config):
 
     dense_operator = ParallelBeamGeometry3DOp(config.img_size, config.dense_angles, angle_snr=np.inf)
     operator_dict['dense_operator'] = dense_operator
-    
-    logging.info(f'operator_dict: {operator_dict}')
 
   else:
     raise ValueError('Inverse problem unrecognized.')

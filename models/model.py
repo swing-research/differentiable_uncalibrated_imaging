@@ -3,14 +3,11 @@ import numpy as np
 
 from .implicit_neural import FourierNet
 from .spline import NURBS2D, NURBS3D
-
-import sys
-sys.path.append('..')
-import unet_3d as Unet3D
+from .unet_3d import UNet
 
 def get_model_dict(config, input_parameters, guess_recon, spline_info):  
   if config.problem == 'radon_3d':
-    unet = Unet3D.UNet(in_channels=1, 
+    unet = UNet(in_channels=1, 
       out_channels=1, 
       n_blocks=4, 
       start_filts=16,
@@ -18,7 +15,7 @@ def get_model_dict(config, input_parameters, guess_recon, spline_info):
       normalization='batch',
       conv_mode='same',
       dim=3)
-    checkpoint = torch.load(f'unet_3d/models/brats_model_{config.unet_angles}angles_measurementsnr{int(config.measurement_snr)}dB_dynamic.pt')
+    checkpoint = torch.load(f'unets/unet_3d/model_{config.unet_angles}angles_measurementsnr{int(config.measurement_snr)}dB.pt')
   elif config.problem == 'radon':
     unet = torch.hub.load('mateuszbuda/brain-segmentation-pytorch', 
       'unet',
@@ -90,7 +87,7 @@ def get_model_dict(config, input_parameters, guess_recon, spline_info):
       Z = spline_info['y_measured'].detach().cpu().numpy()
       inp_ctrl_pts = torch.from_numpy(np.array([W,X,Y,Z])).permute(1,2,3,0).unsqueeze(0).contiguous()
       weights = torch.ones(1, len(angles_spline_space), num_ctrl_pts_v, num_ctrl_pts_w, 1)
-      measurement_rep = SurfEval3D(
+      measurement_rep = NURBS3D(
         inp_ctrl_pts,
         weights,
         angles_spline_space,

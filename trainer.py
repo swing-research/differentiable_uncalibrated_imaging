@@ -33,8 +33,6 @@ def trainer(config, ground_truth):
     y_measured = utils.perturb_measurements(
       y_measured, config.measurement_snr)
     y_max = torch.max(y_measured)
-    logging.info(f'Measurement shape: {y_measured.shape}')
-    logging.info(f'Measured y max: {y_measured.max()}, min: {y_measured.min()}')
     
     original_operator_clean = operator_dict['original_operator_clean']
     x_fbp = original_operator_clean.pinv(y_measured)
@@ -70,7 +68,7 @@ def trainer(config, ground_truth):
   x_baseline_snr = utils.SNR(ground_truth.cpu().detach().numpy().flatten(), x_baseline.cpu().detach().numpy().flatten())
   logging.info(f'Baseline SNR is {x_baseline_snr}')
   x_fbp_snr = utils.SNR(ground_truth.cpu().detach().numpy().flatten(), x_fbp.cpu().detach().numpy().flatten())
-  logging.info(f'FBP SNR is {x_fbp_snr}')
+  logging.info(f'Pseudoinverse SNR is {x_fbp_snr}')
   np.save(config.workdir + '/fbp.npy', x_fbp.cpu().detach().numpy().reshape(recon_size).squeeze())
   np.save(config.workdir + '/baseline.npy', x_baseline.cpu().detach().numpy().reshape(recon_size).squeeze())
   if config.problem == 'radon_3d':

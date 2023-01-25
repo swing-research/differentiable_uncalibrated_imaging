@@ -52,15 +52,12 @@ def main(argv):
       f'Working directory {config.workdir} does not exist')
 
   if config.problem == 'radon_3d':
-    image = np.load(f'brats/processed/val/{config.img_index}.npy').astype(np.float32)
+    image = np.load(f'3d_volumes/{config.img_index}.npy').astype(np.float32)
   elif config.problem == 'radon':
     image = np.load('lodopab/test.npy').astype(np.float32)
     image = image[config.img_index, 0]
   else:
     raise ValueError('Did not recognize problem')
-
-  logging.info(image.shape)
-  logging.info(f'Max: {image.max()}, min: {image.min()}')
 
   recon, gt = trainer.trainer(
     config,

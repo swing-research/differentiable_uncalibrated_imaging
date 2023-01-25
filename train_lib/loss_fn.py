@@ -132,33 +132,11 @@ def get_loss_fn(config, operators, models, spline_info):
     dense_loss = ((
       dense_measurements_from_rep - dense_measurements_from_op / y_max)**2).mean()
 
-    ## Consistency  loss
-    if config.consistency_weight > 0:
-      if config.problem == 'radon':
-        reprojected_measurements = dense_operator(dense_operator.pinv(
-          torch.reshape(dense_measurements_from_rep, 
-          (1, 1, dense_operator.num_angles, dense_operator.num_detectors))))
-      elif config.problem == 'radon_3d':
-        reprojected_measurements = dense_operator(dense_operator.pinv(
-          torch.reshape(dense_measurements_from_rep, 
-          (1, 1, dense_operator.num_angles, dense_operator.num_detectors_x, dense_operator.num_detectors_y))))
-
-      error = torch.reshape(dense_measurements_from_rep, reprojected_measurements.shape)  - reprojected_measurements
-
-      consistency_loss = torch.square(error).mean()
-
-    else:
-      consistency_loss = torch.tensor(0.0, dtype=torch.float32, device=dense_loss.device)
-
-    if config.data_fidelity:
-      loss = config.y_loss_weight * y_loss + config.data_fid_weight * dense_loss + config.consistency_weight*consistency_loss
-    else:
-      loss = config.y_loss_weight * y_loss + config.consistency_weight*consistency_loss
+    loss = config.y_loss_weight * y_loss + config.data_fid_weight * dense_loss
     
     loss_dict = {
       'measurement_loss': y_loss, 
       'dense_loss': dense_loss, 
-      'consistency_loss': consistency_loss,
       'total_loss': loss
     }
 
