@@ -24,10 +24,10 @@ def get_config():
   config.total_steps = 5000 # total number of iterations
 
   # training parameters
-  config.y_loss_weight = 1.0
-  config.data_fid_weight = 0.6
-  config.y_siren_learning_rate = 5e-3
-  config.input_learning_rate = 1e-4
+  config.fitting_weight = 1.0
+  config.consistency_weight = 0.6
+  config.rep_learning_rate = 5e-3
+  config.parameter_learning_rate = 1e-4
   config.termination_tol = 1e-11
 
   return config
