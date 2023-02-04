@@ -132,7 +132,7 @@ def get_loss_fn(config, operators, models, spline_info):
     dense_loss = ((
       dense_measurements_from_rep - dense_measurements_from_op / y_max)**2).mean()
 
-    loss = config.y_loss_weight * y_loss + config.data_fid_weight * dense_loss
+    loss = config.fitting_weight * y_loss + config.consistency_weight * dense_loss
     
     loss_dict = {
       'measurement_loss': y_loss, 

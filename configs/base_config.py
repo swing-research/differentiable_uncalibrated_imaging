@@ -6,14 +6,11 @@ def get_config():
 
   config.workdir = ''
   
-  config.seed = 0
-  config.img_index = 0
+  config.seed = 0 # random seed
+  config.img_index = 0 # test image number
 
   # logging parameters
-  config.summary_frequency = 100
-
-  # training parameters
-  config.learning_rate = 1e-4
+  config.summary_frequency = 100 # number of iterations before printing log output
 
   # representation parameters
   config.representation = ml_collections.ConfigDict()

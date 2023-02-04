@@ -5,17 +5,17 @@ def get_config():
   config = base_config.get_config()
 
   # inverse problem parameters
-  config.problem = 'radon_3d'
-  config.angles = 60
-  config.dense_angles = config.angles
-  config.unet_angles = config.angles
-  config.angle_snr = 25.0
-  config.measurement_snr = 35.0
+  config.problem = 'radon_3d' # solve 3D CT
+  config.angles = 60 # number of measurement tilt angles
+  config.dense_angles = config.angles # number of angles to evaluate
+  config.unet_angles = config.angles # number of angles used to train Unet
+  config.angle_snr = 25.0 # angle uncertainty
+  config.measurement_snr = 35.0 # measurement uncertainty
 
-  config.img_size = 64
+  config.img_size = 64 # test volume size
   
   # representation parameters
-  config.representation.type = 'implicit_neural'
+  config.representation.type = 'implicit_neural' # implicit neural measurment representation
   config.representation.input_size = 3
   config.representation.L = 10
   config.representation.num_layers = 7
@@ -23,13 +23,13 @@ def get_config():
   config.representation.output_size = 1
 
   # logging parameters
-  config.total_steps = 20000
+  config.total_steps = 20000 # total number of iterations
 
   # training parameters
-  config.y_loss_weight = 10.0
-  config.data_fid_weight = 1.0
-  config.y_siren_learning_rate = 1e-3
-  config.input_learning_rate = 1e-4
+  config.fitting_weight = 10.0
+  config.consistency_weight = 1.0
+  config.rep_learning_rate = 1e-3
+  config.parameter_learning_rate = 1e-4
   config.termination_tol = 1e-11
 
   return config
